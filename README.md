@@ -1,0 +1,148 @@
+# Portfolio Landing Page
+
+This repository is for a design-focused React portfolio landing page.
+
+The project goal is to build a clear, responsive portfolio site with a visual structure that can grow over time. Future work will include an admin page so portfolio items can be uploaded and managed continuously.
+
+## Project Goals
+
+- Design-centered portfolio landing page
+- React-based frontend
+- Clear visual hierarchy instead of excessive animation
+- Responsive web experience
+- Section-based structure for future expansion
+- Future admin page for portfolio uploads and content management
+- Scroll-based composition with calm, purposeful interactions
+- Soft pastel background direction with green accent elements
+
+## Current Status
+
+The project now has an initial React and Vite landing page implementation.
+
+The admin page has not been implemented yet.
+
+The current implementation focuses on the public portfolio landing page, reusable project data, responsive layout, calm scroll reveal behavior, and future admin-page readiness.
+
+## Repository
+
+Git remote:
+
+- origin: https://github.com/bluebeatle97/portfolio_page.git
+
+## Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the local development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+## Documents
+
+### `AGENTS.md`
+
+Defines how coding agents should work in this repository.
+
+Use this document before making changes to understand:
+
+- Project boundaries
+- Working rules
+- Implementation expectations
+- Quality checks
+
+### `DESIGN.md`
+
+Defines the visual and interaction direction for the portfolio.
+
+Use this document when making design or frontend decisions about:
+
+- Layout rhythm
+- Typography
+- Responsiveness
+- Motion
+- Accessibility
+- Portfolio content presentation
+- Reference-based page composition
+- Scroll actions and event direction
+- Color direction
+
+### `TASK.md`
+
+Tracks current and future work.
+
+Use this document to understand:
+
+- Current phase
+- Immediate tasks
+- Future implementation stages
+- Open decisions
+
+Update it as the project direction becomes clearer.
+
+### `docs/portfolio-plan.md`
+
+Stores the detailed portfolio composition plan provided for this project.
+
+Use this document as the source for:
+
+- Positioning and tone
+- Section order
+- Project detail content
+- Workflow and skills presentation
+- Codex implementation cautions
+
+### `README.md`
+
+Provides the project overview and explains how the root documents should be used.
+
+Start here when opening the project for the first time.
+
+## Recommended Workflow
+
+1. Read `README.md`.
+2. Review `DESIGN.md` for visual direction.
+3. Review `TASK.md` for the current phase and next tasks.
+4. Review `AGENTS.md` before making code changes.
+5. Update documentation when decisions change.
+
+## Reference Usage
+
+The project currently references these portfolio sites for page composition and interaction ideas:
+
+- https://matveyan.com/
+- https://www.rishabh-upadhyay.com/
+- https://killianherzer.com/
+
+These references should guide structure, scroll rhythm, section transitions, and event behavior.
+
+They should not be copied as exact visual styles. The intended color direction is calmer: pastel or soft background tones with green accent elements that feel emphasized but not visually harsh.
+
+## Current Page Structure
+
+The current React implementation follows the portfolio plan:
+
+- Hero
+- About / Positioning
+- Core Strengths
+- Featured Projects slider
+- Project Contact 2026 detail
+- Color-Fit detail
+- Workflow / AI usage
+- Skills
+- Contact
+
+## Important Boundary
+
+At this stage, the public landing page exists, but the admin page and upload flow are still future work.
