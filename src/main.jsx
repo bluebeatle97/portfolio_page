@@ -12,22 +12,10 @@ const navItems = [
 ];
 
 const strengths = [
-  {
-    title: '기획을 구조로 바꾸는 능력',
-    text: '아이디어를 사용자 흐름, 화면 구조, 데이터 구조로 구체화합니다.',
-  },
-  {
-    title: 'AI 리소스 연출 능력',
-    text: 'AI 이미지, 영상, 스토리보드 도구를 활용해 프로젝트의 시각적 완성도를 높입니다.',
-  },
-  {
-    title: '프론트엔드와 데이터 연결',
-    text: 'API 응답과 DB 데이터를 화면 및 인터랙션 흐름에 연결합니다.',
-  },
-  {
-    title: '자동화 기반 생산성',
-    text: 'Codex, 프롬프트 엔지니어링, 테스트 하네스 등을 활용해 반복 작업을 줄입니다.',
-  },
+  ['Planning', '아이디어를 화면 구조, 사용자 흐름, 데이터 단위로 정리합니다.'],
+  ['Development', 'React 기반 화면과 인터랙션을 실제 동작하는 결과물로 구현합니다.'],
+  ['AI Workflow', 'AI 도구를 리소스 제작, 코드 보조, 검증 루틴에 맞게 사용합니다.'],
+  ['Iteration', '작게 만들고 확인하면서 완성도를 높이는 방식으로 작업합니다.'],
 ];
 
 const skills = [
@@ -39,36 +27,22 @@ const skills = [
 ];
 
 const workflow = [
-  {
-    title: '기획',
-    text: '아이디어를 사용자 흐름, 화면 구조, 기능 단위로 나눕니다.',
-  },
-  {
-    title: '리소스 제작',
-    text: 'AI 이미지, 영상, 스토리보드 리소스를 프로젝트 톤에 맞게 제작합니다.',
-  },
-  {
-    title: '개발',
-    text: '화면, 인터랙션, API 데이터 흐름을 실제 서비스 구조로 연결합니다.',
-  },
-  {
-    title: '검증과 개선',
-    text: '테스트 하네스와 반복 수정으로 결과물의 안정성과 완성도를 높입니다.',
-  },
+  ['01', 'Frame', '문제와 사용자의 흐름을 먼저 정리하고 페이지의 역할을 나눕니다.'],
+  ['02', 'Build', '작동 가능한 화면을 빠르게 만들고 필요한 데이터 구조를 연결합니다.'],
+  ['03', 'Refine', '인터랙션, 문장, 반응형 흐름을 실제 사용 기준으로 다듬습니다.'],
+  ['04', 'Ship', '검증 가능한 단위로 정리해 배포와 다음 확장이 가능하게 만듭니다.'],
 ];
 
 const techIcons = {
   HTML: '/assets/icon/HTML5.png',
   CSS: '/assets/icon/CSS3.png',
   JavaScript: '/assets/icon/JavaScript.png',
-  'JSON Data': '/assets/icon/JSON.png',
   React: '/assets/icon/React.png',
   Vite: '/assets/icon/Vite.png',
   'Redux Toolkit': '/assets/icon/Redux.png',
   'React Bootstrap': '/assets/icon/React-Bootstrap.png',
   Express: '/assets/icon/Express.png',
   'Three.js': '/assets/icon/Three.js.png',
-  Python: '/assets/icon/Python.png',
   MySQL: '/assets/icon/MySQL.png',
   'FAST API': '/assets/icon/FastAPI.png',
   'REST API': '/assets/icon/OpenAPI.png',
@@ -77,25 +51,16 @@ const techIcons = {
   'Git-hub': '/assets/icon/GitHub.png',
 };
 
-function TechTag({ label }) {
-  const iconSrc = techIcons[label];
-
-  return (
-    <span className="tag-item">
-      {iconSrc && (
-        <span className="tag-icon" aria-hidden="true">
-          <img src={iconSrc} alt="" loading="lazy" />
-        </span>
-      )}
-      {label}
-    </span>
-  );
-}
-
 function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeSection, setActiveSection] = useState('home');
+  const [theme, setTheme] = useState(() => localStorage.getItem('portfolio-theme') || 'dark');
   const projects = useMemo(() => publishedProjects, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('portfolio-theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -105,7 +70,7 @@ function App() {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         if (visible[0]?.target?.id) setActiveSection(visible[0].target.id);
       },
-      { rootMargin: '-35% 0px -50% 0px', threshold: [0.15, 0.35, 0.6] },
+      { threshold: [0.45, 0.65, 0.85] },
     );
 
     ['home', ...navItems.map((item) => item.id)].forEach((id) => {
@@ -117,46 +82,30 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('is-visible');
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
-    );
-
-    document.querySelectorAll('[data-reveal]').forEach((element) => revealObserver.observe(element));
-    return () => revealObserver.disconnect();
-  }, []);
-
-  useEffect(() => {
     document.body.classList.toggle('modal-open', Boolean(selectedProject));
   }, [selectedProject]);
 
   return (
     <>
-      <Header activeSection={activeSection} />
-      <main>
+      <Header activeSection={activeSection} theme={theme} onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
+      <main className="snap-stage">
         <Hero featuredProject={featuredProjects[0]} />
         <AboutSection />
-        <StrengthSection />
         <ProjectsSection projects={projects} onOpenProject={setSelectedProject} />
         <WorkflowSection />
         <SkillsSection />
         <ContactSection />
       </main>
-      <Footer />
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </>
   );
 }
 
-function Header({ activeSection }) {
+function Header({ activeSection, theme, onToggleTheme }) {
   return (
     <header className="site-header">
       <a className="brand-mark" href="#home" aria-label="Go to home">
-        WOOJIN KIM
+        WJ
       </a>
       <nav className="section-nav" aria-label="Primary navigation">
         {navItems.map((item) => (
@@ -165,127 +114,138 @@ function Header({ activeSection }) {
           </a>
         ))}
       </nav>
+      <button className="theme-toggle" type="button" onClick={onToggleTheme} aria-label="Toggle color theme">
+        {theme === 'dark' ? 'Light' : 'Dark'}
+      </button>
     </header>
   );
 }
 
 function Hero({ featuredProject }) {
-  const tags = ['AI API', 'Frontend', 'Interactive Web', 'Prompt Engineering', 'Codex', 'Automation', 'MySQL', 'React'];
-
   return (
-    <section id="home" className="hero section-shell">
-      <div className="hero-copy" data-reveal>
-        <p className="eyebrow">AI 활용형 기획자&개발자 / Product Builder</p>
-        <h1>기획과 구현 사이를 연결하는 AI 활용형 개발자</h1>
-        <p className="hero-lead">
-          웹 서비스 기획부터 인터랙티브 콘텐츠 연출, 프론트엔드 구현, AI API 활용까지
-          아이디어를 실제 사용 가능한 결과물로 구체화하는 프로젝트를 만들어 왔습니다.
-        </p>
-        <div className="tag-list">
-          {tags.map((tag) => (
-            <TechTag key={tag} label={tag} />
-          ))}
+    <section id="home" className="page-panel hero-panel">
+      <div className="panel-inner hero-layout">
+        <div className="hero-copy">
+          <p className="eyebrow">Portfolio 2026</p>
+          <h1>Portfolio</h1>
+          <p className="lead">
+            화면 구조, 인터랙션, 데이터 흐름을 정리하고 실제로 동작하는 동적 웹 결과물까지 구현합니다.
+          </p>
         </div>
-        <div className="hero-actions">
-          <a className="button primary" href="#projects">
-            프로젝트 보기
-          </a>
-          <a className="button ghost" href="#contact">
-            연락하기
-          </a>
-        </div>
+
       </div>
-      <aside className="hero-preview" data-reveal aria-label="Featured project preview">
-        <span>Featured</span>
-        <img src={featuredProject.thumbnailUrl} alt={`${featuredProject.title} preview`} />
-        <strong>{featuredProject.title}</strong>
-        <p>{featuredProject.summary}</p>
-      </aside>
+      <ScrollCue href="#about" />
     </section>
   );
 }
 
 function AboutSection() {
-  const cards = [
-    ['Planning', ['사용자 흐름 설계', '콘텐츠 구조 설계', '화면 구성 기획', '프로젝트 방향성 정리']],
-    ['Development', ['프론트엔드 구현', 'API 데이터 연결', 'DB 구조 설계 참여', '반응형 UI 구현']],
-    ['AI Workflow', ['AI 이미지·영상 리소스 제작', 'LLM API 활용', 'Codex 기반 개발 보조', '테스트 하네스 기반 검증']],
-  ];
-
   return (
-    <section id="about" className="about-section section-shell">
-      <SectionTitle eyebrow="About" title="저는 이런 방식으로 프로젝트를 만듭니다." />
-      <p className="section-lead" data-reveal>
-        아이디어를 기획안에만 남겨두기보다 실제 화면과 기능으로 구현하는 과정에 관심을 가지고 작업해 왔습니다.
-        기획, 연출, 개발을 하나의 흐름으로 연결하고 AI와 자동화 도구를 활용해 반복 작업을 줄입니다.
-      </p>
-      <div className="three-column-grid">
-        {cards.map(([title, items]) => (
-          <article className="info-card" key={title} data-reveal>
-            <h3>{title}</h3>
-            <ul>
-              {items.map((item) => (
-                <li key={item}>{item}</li>
+    <section id="about" className="page-panel about-panel">
+      <div className="panel-inner">
+        <SectionTitle label="About me" />
+        <div className="about-grid">
+          <aside className="profile-block">
+            <div className="portrait-frame" aria-hidden="true">
+              <span>WJ</span>
+            </div>
+            <h2>Kim Woojin</h2>
+            <p>Frontend / Product Builder/ planner </p>
+            <a href="mailto:hello@example.com">bluebeatle97@gmail.com</a>
+          </aside>
+          <div className="about-details">
+            <InfoBlock title="Character">
+              명확한 구조를 좋아하고, 아이디어를 빠르게 화면으로 검증하는 과정에 강점이 있습니다.
+            </InfoBlock>
+            <InfoBlock title="Direction">
+              과한 장식보다 읽히는 구성, 반복 가능한 프로젝트 구조, 실제 사용 흐름을 우선합니다.
+            </InfoBlock>
+            <InfoBlock title="Strength">
+              {strengths.map(([title, text]) => (
+                <article key={title} className="mini-card">
+                  <strong>{title}</strong>
+                  <span>{text}</span>
+                </article>
               ))}
-            </ul>
-          </article>
-        ))}
+            </InfoBlock>
+          </div>
+        </div>
       </div>
-    </section>
-  );
-}
-
-function StrengthSection() {
-  return (
-    <section id="strengths" className="strength-section section-shell">
-      <SectionTitle eyebrow="Core Strength" title="제가 결과물을 만드는 방식" />
-      <div className="strength-grid">
-        {strengths.map((strength, index) => (
-          <article className="strength-card" key={strength.title} data-reveal>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h3>{strength.title}</h3>
-            <p>{strength.text}</p>
-          </article>
-        ))}
-      </div>
+      <ScrollCue href="#projects" />
     </section>
   );
 }
 
 function ProjectsSection({ projects, onOpenProject }) {
+  const galleryProjects =
+    projects.length >= 3 ? projects : Array.from({ length: 3 }, (_, index) => projects[index % projects.length]);
+  const loopProjects = projects.length > 3 ? [...galleryProjects, ...galleryProjects] : galleryProjects;
+
   return (
-    <section id="projects" className="projects-section section-shell">
-      <SectionTitle eyebrow="Featured Projects" title="프로젝트 카드를 클릭하면 상세 내용을 볼 수 있습니다." />
-      <div className="project-grid">
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} onClick={() => onOpenProject(project)} />
-        ))}
+    <section id="projects" className="page-panel projects-panel">
+      <div className="panel-inner">
+        <SectionTitle label="Projects" subtitle="썸네일 중심의 프로젝트 카드가 화면을 채우고, 클릭하면 상세 정보가 확장됩니다." />
+        <div className="project-rail" aria-label="Featured projects">
+          <div className={`project-track ${projects.length > 3 ? 'is-looping' : ''}`}>
+            {loopProjects.map((project, index) => (
+              <ProjectCard
+                key={`${project.id}-${index}`}
+                project={project}
+                instanceId={index}
+                onClick={() => onOpenProject(project)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
+      <ScrollCue href="#workflow" />
     </section>
   );
 }
 
-function ProjectCard({ project, onClick }) {
+function ProjectCard({ project, instanceId, onClick }) {
+  const handlePointerMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    const rotateX = ((event.clientY - rect.top) / rect.height - 0.5) * -8;
+    const rotateY = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
+
+    event.currentTarget.style.setProperty('--pointer-x', `${x}%`);
+    event.currentTarget.style.setProperty('--pointer-y', `${y}%`);
+    event.currentTarget.style.setProperty('--rotate-x', `${rotateX}deg`);
+    event.currentTarget.style.setProperty('--rotate-y', `${rotateY}deg`);
+  };
+
+  const handlePointerLeave = (event) => {
+    event.currentTarget.style.setProperty('--pointer-x', '50%');
+    event.currentTarget.style.setProperty('--pointer-y', '50%');
+    event.currentTarget.style.setProperty('--rotate-x', '0deg');
+    event.currentTarget.style.setProperty('--rotate-y', '0deg');
+  };
+
   return (
     <button
-      className="project-card"
+      className="project-card holo-card"
       type="button"
       onClick={onClick}
-      data-testid={`project-card-${project.slug}`}
-      data-reveal
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      data-testid={`project-card-${project.slug}-${instanceId}`}
     >
-      <span className="project-status">{project.period}</span>
-      <img src={project.thumbnailUrl} alt={`${project.title} thumbnail`} />
-      <div className="project-card-body">
+      <div className="project-thumb">
+        <img src={project.thumbnailUrl} alt={`${project.title} thumbnail`} />
+      </div>
+      <div className="project-card-content">
+        <span className="project-year">{project.period}</span>
         <p>{project.role}</p>
         <h3>{project.title}</h3>
         <span>{project.summary}</span>
         <div className="tag-list compact">
-          {project.techStack.slice(0, 5).map((tag) => (
+          {project.techStack.slice(0, 4).map((tag) => (
             <TechTag key={tag} label={tag} />
           ))}
         </div>
-        <strong>View Detail</strong>
       </div>
     </button>
   );
@@ -293,69 +253,102 @@ function ProjectCard({ project, onClick }) {
 
 function WorkflowSection() {
   return (
-    <section id="workflow" className="workflow-section section-shell">
-      <SectionTitle eyebrow="Workflow" title="AI를 활용해 작업 속도와 완성도를 높이는 방식" />
-      <div className="workflow-grid">
-        {workflow.map((step, index) => (
-          <article className="workflow-step" key={step.title} data-reveal>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h3>{step.title}</h3>
-            <p>{step.text}</p>
-          </article>
-        ))}
+    <section id="workflow" className="page-panel workflow-panel">
+      <div className="panel-inner">
+        <SectionTitle label="Workflow" subtitle="스크롤마다 하나의 작업 관점이 넘어가듯 읽히도록 단계를 압축했습니다." />
+        <div className="workflow-list">
+          {workflow.map(([number, title, text]) => (
+            <article key={title} className="workflow-item">
+              <span>{number}</span>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
       </div>
+      <ScrollCue href="#skills" />
     </section>
   );
 }
 
 function SkillsSection() {
   return (
-    <section id="skills" className="skills-section section-shell">
-      <SectionTitle eyebrow="Skills" title="기술 스택은 사용 맥락과 함께 보여줍니다." />
-      <div className="skills-grid">
-        {skills.map(([group, items]) => (
-          <article className="skill-card" key={group} data-reveal>
-            <h3>{group}</h3>
-            <div className="tag-list compact">
-              {items.map((item) => (
-                <TechTag key={item} label={item} />
-              ))}
-            </div>
-          </article>
-        ))}
+    <section id="skills" className="page-panel skills-panel">
+      <div className="panel-inner">
+        <SectionTitle label="Skills" />
+        <div className="skills-grid">
+          {skills.map(([group, items]) => (
+            <article className="skill-card" key={group}>
+              <h3>{group}</h3>
+              <div className="tag-list">
+                {items.map((item) => (
+                  <TechTag key={item} label={item} />
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
+      <ScrollCue href="#contact" />
     </section>
   );
 }
 
 function ContactSection() {
   return (
-    <section id="contact" className="contact-section section-shell">
-      <div data-reveal>
-        <p className="eyebrow">Contact</p>
-        <h2>기획과 구현 사이를 연결하는 프로젝트에 관심이 있습니다.</h2>
-        <p>
-          AI와 자동화 도구를 활용해 아이디어를 빠르게 검증하고 실제 서비스로 만드는 일을 계속해 나가고 싶습니다.
-        </p>
-      </div>
-      <div className="contact-actions" data-reveal>
-        <a className="button primary" href="mailto:hello@example.com">
-          Email
-        </a>
-        <a className="button ghost" href="https://github.com/bluebeatle97" target="_blank" rel="noreferrer">
-          GitHub
-        </a>
+    <section id="contact" className="page-panel contact-panel">
+      <div className="panel-inner contact-layout">
+        <div>
+          <p className="eyebrow">Contact</p>
+          
+        </div>
+        <div className="contact-actions">
+          <a className="button primary" href="bluebeatle97@gmil.com">
+            Email
+          </a>
+          <a className="button ghost" href="https://github.com/bluebeatle97" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+        </div>
       </div>
     </section>
   );
 }
 
-function SectionTitle({ eyebrow, title }) {
+function SectionTitle({ label, subtitle }) {
   return (
-    <div className="section-heading" data-reveal>
-      <p className="eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
+    <div className="section-title">
+      <h2>{label}</h2>
+      {subtitle && <p>{subtitle}</p>}
     </div>
+  );
+}
+
+function InfoBlock({ title, children }) {
+  return (
+    <section className="info-block">
+      <h3>{title}</h3>
+      <div>{children}</div>
+    </section>
+  );
+}
+
+function TechTag({ label }) {
+  const iconSrc = techIcons[label];
+
+  return (
+    <span className="tag-item">
+      {iconSrc && <img src={iconSrc} alt="" aria-hidden="true" loading="lazy" />}
+      {label}
+    </span>
+  );
+}
+
+function ScrollCue({ href }) {
+  return (
+    <a className="scroll-cue" href={href} aria-label="Scroll to next section">
+      <span />
+    </a>
   );
 }
 
@@ -396,19 +389,19 @@ function ProjectModal({ project, onClose }) {
           </div>
         </div>
         <div className="modal-content">
-          <ModalBlock title="나의 역할">
+          <ModalBlock title="Role">
             <p>{project.role}</p>
           </ModalBlock>
-          <ModalBlock title="기술 스택">
-            <div className="tag-list compact">
+          <ModalBlock title="Tech Stack">
+            <div className="tag-list">
               {project.techStack.map((tag) => (
                 <TechTag key={tag} label={tag} />
               ))}
             </div>
           </ModalBlock>
-          <ModalList title="주요 기능" items={project.features} />
-          <ModalList title="구현 과정" items={project.process} />
-          <ModalBlock title="어려웠던 점과 해결 방식">
+          <ModalList title="Features" items={project.features} />
+          <ModalList title="Process" items={project.process} />
+          <ModalBlock title="Challenges">
             <div className="challenge-list">
               {project.challenges.map((challenge) => (
                 <article key={challenge.title}>
@@ -418,18 +411,9 @@ function ProjectModal({ project, onClose }) {
               ))}
             </div>
           </ModalBlock>
-          <ModalList title="결과 및 배운 점" items={project.results} />
-          {project.imageUrls.length > 0 && (
-            <ModalBlock title="이미지 갤러리">
-              <div className="modal-gallery">
-                {project.imageUrls.map((imageUrl) => (
-                  <img key={imageUrl} src={imageUrl} alt={`${project.title} screen`} />
-                ))}
-              </div>
-            </ModalBlock>
-          )}
+          <ModalList title="Results" items={project.results} />
           {links.length > 0 && (
-            <ModalBlock title="관련 링크">
+            <ModalBlock title="Links">
               <div className="modal-links">
                 {links.map(([label, url]) => (
                   <a className="button ghost" href={url} target="_blank" rel="noreferrer" key={label}>
@@ -464,10 +448,6 @@ function ModalList({ title, items }) {
       </ul>
     </ModalBlock>
   );
-}
-
-function Footer() {
-  return <footer className="site-footer section-shell">© 2026 Woojin Kim Portfolio</footer>;
 }
 
 createRoot(document.getElementById('root')).render(

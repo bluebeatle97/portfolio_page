@@ -277,3 +277,14 @@ AI 활용형 개발자
 * 모달 닫기 동작이 정상 작동한다.
 * 모바일에서도 레이아웃이 깨지지 않는다.
 * Project Contact 2026과 Color-Fit 데이터가 등록되어 있다.
+
+---
+
+## Update - 2026-06-09
+
+- Portfolio layout was revised into fixed full-screen sections with vertical scroll snapping on desktop.
+- Mobile layout now falls back to normal scrolling for easier reading.
+- Visual direction was simplified to solid light/dark themes with a lime green signature color.
+- Added a theme toggle in the fixed header.
+- Projects still render from `src/data/projects.js` and open details in a modal.
+- Project cards now use a looping rail-style slider with four visible card instances.
