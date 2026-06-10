@@ -11,8 +11,8 @@
   --accent-soft: rgba(183, 255, 85, 0.14);
   --shadow: rgba(0, 0, 0, 0.34);
   --max: 1260px;
-  --hero-bg-image: url("/assets/img/blackback.png");
-  --display-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --hero-bg-image: url("/portfolio_page/assets/img/blackback.png");
+  --display-font: Inter, "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   font-family: var(--display-font);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -26,11 +26,11 @@
   --text: #11150f;
   --muted: #697263;
   --line: rgba(17, 21, 15, 0.14);
-  --accent: #7ee01d;
+  --accent: #000000;
   --accent-strong: #4fa800;
   --accent-soft: rgba(126, 224, 29, 0.18);
   --shadow: rgba(48, 62, 40, 0.12);
-  --hero-bg-image: url("/assets/img/whiteback.png");
+  --hero-bg-image: url("/portfolio_page/assets/img/whiteback.png");
 }
 
 * {
@@ -49,6 +49,18 @@ body {
   overflow-x: hidden;
   color: var(--text);
   background: var(--bg);
+  font-family: var(--display-font);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+span,
+button,
+li {
   font-family: var(--display-font);
 }
 
@@ -179,6 +191,18 @@ button {
   cursor: pointer;
 }
 
+:root[data-theme="light"] .theme-toggle {
+  border-color: #11150f;
+  background: #11150f;
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .theme-toggle {
+  border-color: rgba(244, 247, 242, 0.72);
+  background: #f4f7f2;
+  color: #11150f;
+}
+
 .section-nav {
   display: flex;
   min-width: 0;
@@ -305,7 +329,7 @@ button {
 .about-summary .eyebrow {
   margin-bottom: 6px;
   color: var(--accent);
-  font-weight: 950;
+  font-weight: 650;
 }
 
 .lead,
@@ -482,7 +506,7 @@ button {
   margin: 8px 0 0;
   color: var(--accent);
   font-size: 1.08rem;
-  font-weight: 950;
+  font-weight: 1200;
 }
 
 .profile-block p,
@@ -618,7 +642,7 @@ button {
   width: 100%;
   overflow: hidden;
   margin: 0;
-  padding: 8px 0 22px;
+  padding: 0;
   perspective: 1200px;
 }
 
@@ -634,8 +658,9 @@ button {
   position: relative;
   display: grid;
   overflow: hidden;
-  min-height: min(58svh, 540px);
-  align-content: end;
+  height: clamp(480px, calc(100svh - 230px), 560px);
+  min-height: 480px;
+  grid-template-rows: minmax(260px, 1fr) auto;
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -658,11 +683,11 @@ button {
 
 .project-card:hover,
 .project-card:focus-visible {
-  border-color: color-mix(in srgb, var(--accent) 70%, var(--line));
+  border-color: rgba(255, 255, 255, 0.42);
   box-shadow:
     0 28px 90px var(--shadow),
-    0 0 0 1px var(--accent-soft),
-    0 0 42px color-mix(in srgb, var(--accent) 18%, transparent);
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
   outline: none;
   transform: translateY(-8px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
 }
@@ -675,11 +700,12 @@ button {
   background:
     radial-gradient(
       circle at var(--pointer-x) var(--pointer-y),
-      rgba(255, 255, 255, 0.46),
-      color-mix(in srgb, var(--accent) 28%, transparent) 15%,
-      transparent 34%
+      rgba(255, 255, 255, 0.34),
+      rgba(255, 255, 255, 0.16) 18%,
+      transparent 38%
     ),
-    linear-gradient(115deg, transparent 0 30%, rgba(255, 255, 255, 0.24) 46%, transparent 62%);
+    linear-gradient(115deg, transparent 0 28%, rgba(255, 255, 255, 0.26) 46%, transparent 64%),
+    linear-gradient(35deg, rgba(255, 255, 255, 0.12), transparent 45%);
   mix-blend-mode: screen;
   content: "";
   opacity: 0;
@@ -689,11 +715,12 @@ button {
 
 .holo-card::after {
   position: absolute;
-  inset: 0;
+  inset: 0 0 auto;
   z-index: 1;
+  height: calc(100% - 220px);
   border-radius: inherit;
   background:
-    linear-gradient(180deg, transparent 34%, rgba(0, 0, 0, 0.46) 72%, rgba(0, 0, 0, 0.82)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 30%, rgba(0, 0, 0, 0.24)),
     radial-gradient(circle at 50% 0%, transparent, rgba(0, 0, 0, 0.34) 70%);
   content: "";
   pointer-events: none;
@@ -705,38 +732,106 @@ button {
 }
 
 .project-thumb {
-  position: absolute;
-  inset: 0;
-  background: var(--surface-strong);
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
 }
 
 .project-thumb img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transform: scale(1.02);
+  max-width: none;
+  object-fit: contain;
+  object-position: center;
+  transform: none;
   transition: transform 420ms ease;
+}
+
+.project-quick-links {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.project-quick-links a {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #11150f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.18);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.project-quick-links a img {
+  width: 17px;
+  height: 17px;
+  display: block;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.project-quick-links a span {
+  line-height: 1;
+}
+
+.project-quick-links a:hover,
+.project-quick-links a:focus-visible {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+  color: #11150f;
+  outline: none;
+  transform: translateY(-2px);
 }
 
 .project-card:hover .project-thumb img,
 .project-card:focus-visible .project-thumb img {
-  transform: scale(1.08);
+  transform: none;
 }
 
 .project-card-content {
   position: relative;
   z-index: 3;
-  display: grid;
-  gap: 12px;
-  padding: clamp(18px, 2.3vw, 30px);
+  display: flex;
+  min-height: 220px;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(18px, 2.1vw, 26px);
+  border-top: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+    var(--surface);
 }
 
 .project-card h3 {
   margin: 0;
+  min-height: 1.12em;
   overflow: hidden;
-  color: #ffffff;
-  font-size: clamp(1.2rem, 1.6vw, 1.9rem);
-  line-height: 1;
+  color: #11150f;
+  font-size: clamp(1.42rem, 2vw, 2.08rem);
+  font-weight: 900;
+  line-height: 1.05;
   text-overflow: ellipsis;
   text-wrap: balance;
   white-space: nowrap;
@@ -744,24 +839,59 @@ button {
 
 .project-card p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--text);
   font-size: 0.78rem;
   font-weight: 800;
   line-height: 1.45;
 }
 
 .project-card .project-card-content > span:not(.project-year) {
-  color: rgba(255, 255, 255, 0.76);
+  overflow: hidden;
+  color: var(--muted);
   font-size: 0.92rem;
   line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   text-wrap: pretty;
 }
 
 .project-card .tag-item {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(7, 9, 6, 0.54);
-  color: rgba(255, 255, 255, 0.82);
+  border-color: var(--line);
+  background: var(--surface-strong);
+  color: var(--muted);
   backdrop-filter: blur(10px);
+}
+
+.project-card .tag-list {
+  margin-top: auto;
+}
+
+.project-detail-button {
+  display: none;
+  min-height: 38px;
+  width: fit-content;
+  margin-top: 2px;
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 900;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.project-detail-button:hover,
+.project-detail-button:focus-visible {
+  border-color: var(--accent-strong);
+  background: var(--accent-soft);
+  outline: none;
+  transform: translateY(-2px);
 }
 
 .workflow-list {
@@ -892,7 +1022,9 @@ button {
   inset: 0;
   z-index: 80;
   display: grid;
-  place-items: center;
+  align-items: start;
+  justify-items: center;
+  overflow-y: auto;
   padding: 28px;
   background: rgba(0, 0, 0, 0.64);
   backdrop-filter: blur(12px);
@@ -901,10 +1033,10 @@ button {
 
 .project-modal {
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
   display: grid;
   width: min(1080px, 100%);
-  max-height: min(88svh, 860px);
+  max-height: calc(100svh - 56px);
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface);
@@ -913,27 +1045,66 @@ button {
   animation: modal-expand-in 420ms cubic-bezier(0.2, 0.84, 0.24, 1) both;
 }
 
+.modal-action-bar {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.modal-action-bar span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
 .modal-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 2;
-  min-height: 38px;
+  display: none;
+}
+
+.modal-close-control {
+  min-height: 28px;
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--bg);
   color: var(--text);
   cursor: pointer;
-  font-size: 0.82rem;
+  font-size: 0;
   font-weight: 900;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.modal-close-control::after {
+  content: "Close";
+  font-size: 0.82rem;
+}
+
+.modal-close-control:hover,
+.modal-close-control:focus-visible {
+  border-color: var(--accent-strong);
+  background: var(--accent-soft);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .modal-hero {
   display: grid;
-  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1fr);
+  grid-template-columns: minmax(280px, 0.62fr) minmax(0, 1fr);
   gap: 28px;
-  padding: 28px 28px 18px;
+  padding: 24px 28px 18px;
   align-items: center;
 }
 
@@ -943,11 +1114,19 @@ button {
   gap: 16px;
 }
 
-.modal-title-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+.modal-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 18px;
-  align-items: end;
+}
+
+.modal-meta-row .eyebrow {
+  margin: 0;
+}
+
+.modal-title-row {
+  min-width: 0;
 }
 
 .modal-title-links {
@@ -955,18 +1134,42 @@ button {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 8px;
-  padding-bottom: 4px;
 }
 
 .modal-title-links .button {
   min-height: 38px;
   padding: 0 14px;
+  gap: 8px;
   font-size: 0.78rem;
+}
+
+.modal-title-links .button img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.modal-title-links .button.signature {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+  color: #11150f;
+  box-shadow: 0 12px 34px rgba(79, 168, 0, 0.22);
+}
+
+.modal-title-links .button.signature:hover,
+.modal-title-links .button.signature:focus-visible {
+  border-color: var(--accent-strong);
+  background: var(--accent);
+  color: var(--bg);
+  outline: none;
+  transform: translateY(-2px);
 }
 
 .modal-hero img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: clamp(240px, 32svh, 360px);
   border-radius: 8px;
   object-fit: cover;
   background: var(--surface-strong);
@@ -974,9 +1177,13 @@ button {
 
 .modal-hero h2 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 1;
-  text-wrap: balance;
+  overflow: hidden;
+  font-size: clamp(1.65rem, 3vw, 2.55rem);
+  font-weight: 760;
+  line-height: 1.12;
+  padding-bottom: 0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .modal-hero p:not(.eyebrow) {
@@ -986,7 +1193,7 @@ button {
 }
 
 .modal-content {
-  overflow-y: auto;
+  overflow: visible;
   display: grid;
   gap: 16px;
   padding: 0 28px 28px;
@@ -1211,7 +1418,8 @@ button {
   }
 
   .project-card {
-    min-height: 460px;
+    height: 520px;
+    min-height: 520px;
     scroll-snap-align: start;
   }
 
@@ -1258,12 +1466,15 @@ button {
   }
 
   .modal-backdrop {
-    align-items: stretch;
     padding: 10px;
   }
 
   .project-modal {
     max-height: calc(100svh - 20px);
+  }
+
+  .modal-hero img {
+    height: 240px;
   }
 
   .modal-hero,
@@ -1272,11 +1483,17 @@ button {
     padding-right: 16px;
   }
 
-  .modal-title-row {
-    grid-template-columns: 1fr;
+  .modal-meta-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .modal-title-links {
     justify-content: flex-start;
+  }
+
+  .modal-hero h2 {
+    white-space: normal;
   }
 }

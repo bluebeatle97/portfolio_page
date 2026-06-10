@@ -317,3 +317,27 @@ AI 활용형 개발자
 - Added manual looping arrow controls to the project slider.
 - Moved project homepage and GitHub links into the modal title area.
 - Applied the hero typography direction more consistently across the site.
+
+## Update - 2026-06-10 - GitHub Pages and Modal Polish
+
+- Added Vite `base: '/portfolio_page/'` for the GitHub Pages repository path.
+- Configured production builds to output into `docs/` for `master / docs` Pages deployment.
+- Moved the original portfolio plan document to root `portfolio-plan.md` so `docs/` can be used only for deployment output.
+- Changed the default theme to light mode for new visitors.
+- Revised project modal scrolling, thumbnail sizing, date-row links, and one-line desktop title behavior.
+- Removed the green hover glow from project cards and kept a glass-like reflection effect.
+
+## Update - 2026-06-10 - Project Card Link Layout
+
+- Separated project card thumbnails from title/content so titles are emphasized below the image instead of overlaying it.
+- Added direct project links on thumbnails for homepage and GitHub.
+- Styled modal homepage/GitHub buttons with the signature green color.
+- Moved the modal close control into a dedicated top action bar.
+- Restored whole-card click behavior for opening project modals while keeping thumbnail external links separate.
+- Added Vite and GitHub icons to the thumbnail quick-link buttons.
+- Revised project card titles to use bold black text instead of the signature color.
+- Changed project thumbnails to `contain` on a white background so images are not cropped.
+- Tightened project card height and rail spacing so cards fill the section without top/bottom empty padding.
+- Reversed the theme toggle button colors so light mode shows a black `Dark` button with white text.
+- Switched project quick-link labeling from URL matching to `data-link-type` so GitHub Pages demo URLs still display as Live Site.
+- Replaced CSS pseudo-element link icons with real inline `<img>` icons on both project cards and modal title links.

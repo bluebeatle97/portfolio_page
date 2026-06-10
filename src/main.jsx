@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 import { publishedProjects } from './data/projects.js';
 
+const assetUrl = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+
 const navItems = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
@@ -51,7 +53,14 @@ const techIcons = {
   'REST API': '/assets/icon/OpenAPI.png',
   'Node.js': '/assets/icon/Node.js.png',
   Figma: '/assets/icon/Figma.png',
-  'Git-hub': '/assets/icon/GitHub.png',
+  'Git-hub': '/assets/icon/github.webp',
+  Notion: '/assets/icon/notion.webp',
+  'Nano Banana': '/assets/icon/nanobanana-color.svg',
+  'Gemini Cli': '/assets/icon/geminicli-color.svg',
+  Flow: '/assets/icon/flow.webp',
+  'OpenAI Codex': '/assets/icon/codex-color.svg',
+  'Clode code': '/assets/icon/claudecode-color.svg',
+  'OpenAI API': '/assets/icon/openai.webp',
 };
 
 const linkLabels = {
@@ -64,11 +73,15 @@ const linkLabels = {
 function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeSection, setActiveSection] = useState('home');
-  const [theme, setTheme] = useState(() => localStorage.getItem('portfolio-theme') || 'dark');
+  const [theme, setTheme] = useState(() => localStorage.getItem('portfolio-theme') || 'light');
   const projects = useMemo(() => publishedProjects, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    document.documentElement.style.setProperty(
+      '--hero-bg-image',
+      `url("${assetUrl(`/assets/img/${theme === 'dark' ? 'blackback.png' : 'whiteback.png'}`)}")`,
+    );
     localStorage.setItem('portfolio-theme', theme);
   }, [theme]);
 
@@ -113,7 +126,7 @@ function Header({ activeSection, theme, onToggleTheme }) {
   return (
     <header className="site-header">
       <a className="brand-mark" href="#home" aria-label="Go to home">
-        <img src="/assets/img/unnamed.png" alt="" />
+        <img src={assetUrl('/assets/img/unnamed.png')} alt="" />
       </a>
       <nav className="section-nav" aria-label="Primary navigation">
         {navItems.map((item) => (
@@ -189,7 +202,7 @@ function AboutSection() {
         <div className="about-grid" style={profileHeight ? { '--about-profile-height': `${profileHeight}px` } : undefined}>
           <aside className="profile-block" ref={profileRef}>
             <div className="portrait-frame">
-              <img src="/assets/img/profile.png" alt="Kim Woojin profile" />
+              <img src={assetUrl('/assets/img/profile.png')} alt="Kim Woojin profile" />
             </div>
             <h2>김우진 / Kim Woojin</h2>
             <p>Frontend / Product Builder/ Planner </p>
@@ -267,6 +280,12 @@ function ProjectsSection({ projects, onOpenProject }) {
 }
 
 function ProjectCard({ project, instanceId, onClick }) {
+  const quickLinks = Object.entries(project.links).filter(([label, url]) => ['demo', 'github'].includes(label) && Boolean(url));
+  const quickLinkIcons = {
+    demo: '/assets/icon/Vite.png',
+    github: '/assets/icon/github.svg',
+  };
+
   const handlePointerMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 100;
@@ -287,30 +306,60 @@ function ProjectCard({ project, instanceId, onClick }) {
     event.currentTarget.style.setProperty('--rotate-y', '0deg');
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onClick();
+    }
+  };
+
   return (
-    <button
+    <article
       className="project-card holo-card"
-      type="button"
+      role="button"
+      tabIndex={0}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       data-testid={`project-card-${project.slug}-${instanceId}`}
     >
       <div className="project-thumb">
-        <img src={project.thumbnailUrl} alt={`${project.title} thumbnail`} />
+        <img src={assetUrl(project.thumbnailUrl)} alt={`${project.title} thumbnail`} />
+        {quickLinks.length > 0 && (
+          <div className="project-quick-links" aria-label={`${project.title} external links`}>
+            {quickLinks.map(([label, url]) => (
+              <a
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                key={label}
+                data-link-type={label}
+                onClick={(event) => event.stopPropagation()}
+                onKeyDown={(event) => event.stopPropagation()}
+              >
+                <img src={assetUrl(quickLinkIcons[label])} alt="" aria-hidden="true" loading="lazy" />
+                <span>{label === 'demo' ? 'Live Site' : 'GitHub'}</span>
+              </a>
+            ))}
+          </div>
+        )}
       </div>
       <div className="project-card-content">
         <span className="project-year">{project.period}</span>
-        <p>{project.role}</p>
         <h3>{project.title}</h3>
+        <p>{project.role}</p>
         <span>{project.summary}</span>
         <div className="tag-list compact">
           {project.techStack.slice(0, 4).map((tag) => (
             <TechTag key={tag} label={tag} />
           ))}
         </div>
+        <button className="project-detail-button" type="button" onClick={onClick}>
+          상세보기
+        </button>
       </div>
-    </button>
+    </article>
   );
 }
 
@@ -359,7 +408,7 @@ function TechTag({ label }) {
 
   return (
     <span className="tag-item">
-      {iconSrc && <img src={iconSrc} alt="" aria-hidden="true" loading="lazy" />}
+      {iconSrc && <img src={assetUrl(iconSrc)} alt="" aria-hidden="true" loading="lazy" />}
       {label}
     </span>
   );
@@ -390,6 +439,10 @@ function ProjectModal({ project, onClose }) {
   const links = Object.entries(project.links).filter(([, url]) => Boolean(url));
   const titleLinks = links.filter(([label]) => ['demo', 'github'].includes(label));
   const detailLinks = links.filter(([label]) => !['demo', 'github'].includes(label));
+  const titleLinkIcons = {
+    demo: '/assets/icon/Vite.png',
+    github: '/assets/icon/github.svg',
+  };
 
   return (
     <div className="modal-backdrop" onMouseDown={onClose}>
@@ -400,24 +453,40 @@ function ProjectModal({ project, onClose }) {
         aria-labelledby="project-modal-title"
         onMouseDown={(event) => event.stopPropagation()}
       >
+        <div className="modal-action-bar">
+          <span>Project Detail</span>
+          <button className="modal-close-control" type="button" onClick={onClose} aria-label="프로젝트 상세 모달 닫기">
+            닫기
+          </button>
+        </div>
         <button className="modal-close" type="button" onClick={onClose} aria-label="프로젝트 상세 모달 닫기">
           닫기
         </button>
         <div className="modal-hero">
-          <img src={project.thumbnailUrl} alt={`${project.title} 대표 이미지`} />
+          <img src={assetUrl(project.thumbnailUrl)} alt={`${project.title} 대표 이미지`} />
           <div className="modal-heading">
-            <p className="eyebrow">{project.period}</p>
-            <div className="modal-title-row">
-              <h2 id="project-modal-title">{project.title}</h2>
+            <div className="modal-meta-row">
+              <p className="eyebrow">{project.period}</p>
               {titleLinks.length > 0 && (
                 <div className="modal-title-links" aria-label="프로젝트 주요 링크">
                   {titleLinks.map(([label, url]) => (
-                    <a className="button ghost" href={url} target="_blank" rel="noreferrer" key={label}>
-                      {label === 'demo' ? '홈페이지' : 'GitHub'}
+                    <a
+                      className="button signature"
+                      href={url}
+                      target="_blank"
+                      rel="noreferrer"
+                      key={label}
+                      data-link-type={label}
+                    >
+                      <img src={assetUrl(titleLinkIcons[label])} alt="" aria-hidden="true" loading="lazy" />
+                      <span>{label === 'demo' ? 'Live Site' : 'GitHub'}</span>
                     </a>
                   ))}
                 </div>
               )}
+            </div>
+            <div className="modal-title-row">
+              <h2 id="project-modal-title">{project.title}</h2>
             </div>
             <p>{project.description}</p>
           </div>

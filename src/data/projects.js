@@ -6,8 +6,8 @@ export const projects = [
     summary: '사회적 고립을 주제로 한 인터랙티브 웹 콘텐츠',
     description:
       '사회적 고립과 관계 회복을 주제로 한 AI 기반 인터랙티브 설문/분석 플랫폼입니다.사용자는 선택형 내러티브 설문에 참여하고, 응답 데이터는 MySQL DB에 저장됩니다. 이후 GPT 기반 분석을 통해 개인 결과 리포트를 제공하며, 전체 참여자의 응답은 통계 시각화, 채팅, 3D 인터랙션 콘텐츠로 확장됩니다.',
-    role: 'Project Lead / Planning & Direction / Frontend Data Flow',
-    period: '2026',
+    role: '팀장 / 기획자 / 연출자 / B,C컨텐츠 전담 개발 ',
+    period: '2026.04 ~ 2026.05',
     thumbnailUrl: '/assets/img/con_M.PNG',
     imageUrls: ['/assets/project-identity.svg', '/assets/project-editorial.svg', '/assets/project-archive.svg'],
     techStack: [
@@ -27,14 +27,15 @@ export const projects = [
       '사용자 선택 인터랙션',
       '응답 기반 결과 화면',
       '3D/모션 콘텐츠 구성',
-      '관련 콘텐츠 추천 흐름',
+      '쿠키 기반 개인화 설문',
+      '실시간 익명 채팅방',
     ],
     process: [
       '주제를 사용자 경험 중심의 콘텐츠 흐름으로 재구성',
       '화면별 스토리와 인터랙션 구조 설계',
       'React/Vite 기반 화면 구현',
       'Express와 MySQL 데이터 흐름 참여',
-      'LLM 서비스와 응답 기반 결과 화면 연결',
+      'LLM 기반 설문 분석 결과 화면 연결',
     ],
     challenges: [
       {
@@ -69,16 +70,16 @@ export const projects = [
     slug: 'color-fit',
     summary: 'LLM API 기반 맞춤형 뷰티 진단 및 상품 추천 서비스',
     description:
-      'Color-Fit은 사용자의 진단 결과와 퍼스널 컬러 데이터를 바탕으로 LLM API가 분석 결과를 생성하고, 맞춤형 뷰티 상품 추천 흐름으로 연결하는 서비스입니다.',
-    role: 'Solo Developer / AI API Integration / Product Flow Design',
-    period: '2026',
+      'ColorFit은 사용자가 업로드한 얼굴 이미지를 기반으로 16가지 퍼스널컬러 타입을 진단하고, 타입별 컬러 아카이브와 보유 화장품 분석, AI 상담 챗봇까지 제공하는 웹 서비스입니다. 사용자는 AI 진단을 통해 자신의 타입을 확인하고, 16타입 아카이브에서 컬러 특성을 이해한 뒤, My Pouch 기능으로 보유 제품과 퍼스널컬러의 적합도를 분석할 수 있습니다. 또한 모든 페이지에서 접근 가능한 ColorFit 챗봇을 통해 진단 결과와 파우치 분석 맥락을 기반으로 추가 상담을 받을 수 있습니다.',
+    role: '1인 개발자 / 기획자 / 웹디자인',
+    period: '2026.04 ~ 2026.05',
     thumbnailUrl: '/assets/img/color_fit_Sum.PNG',
     imageUrls: ['/assets/project-dashboard.svg', '/assets/project-archive.svg', '/assets/project-editorial.svg'],
     techStack: ['React', 'JavaScript', 'Redux Toolkit', 'React Router', 'React Bootstrap', 'Swiper', 'gh-pages'],
     features: [
-      'AI 진단',
-      '퍼스널 컬러 결과',
-      'AI Advisor',
+      'AI 퍼스널 컬러 진단',
+      '퍼스널 컬러 결과 카드',
+      '개인형 파우치 진단',
       '맞춤형 상품 추천',
       '구매 전환 흐름',
     ],
@@ -107,8 +108,8 @@ export const projects = [
       '반복 구현과 검증 흐름을 통해 개발 효율을 높였습니다.',
     ],
     links: {
-      demo: '',
-      github: '',
+      demo: 'https://color-fit.pages.dev/',
+      github: 'https://github.com/bluebeatle97/color_fit',
       presentation: '',
       readme: '',
     },
@@ -123,8 +124,8 @@ export const projects = [
     summary: 'JavaScript와 JSON 데이터를 활용한 쇼핑몰 UI 클론',
     description:
       '신라면세점 페이지를 참고해 제작한 정적 웹 클론 프로젝트입니다. 상품, 브랜드, 내비게이션, 슬라이더 데이터를 JSON 파일로 분리하고 JavaScript로 화면에 렌더링하며 쇼핑몰형 UI 구조를 구현했습니다.',
-    role: 'Frontend Markup / UI Clone / JSON Data Rendering',
-    period: '2026',
+    role: '1인 개발자 / 기획자 / 웹디자인',
+    period: '2026.03',
     thumbnailUrl: '/assets/img/sinla_S.PNG',
     imageUrls: ['/assets/img/sinla_S.PNG'],
     techStack: ['HTML', 'CSS', 'JavaScript', 'JSON Data'],
@@ -144,7 +145,7 @@ export const projects = [
     ],
     challenges: [
       {
-        title: '정적 페이지에서 많은 데이터를 관리',
+        title: '정적 페이지에서 JSON 데이터를 파싱하여 관리',
         solution:
           '상품, 브랜드, 내비게이션 데이터를 JSON 파일로 나누어 관리하고 JavaScript 렌더링 로직과 화면 구조를 분리했습니다.',
       },
@@ -160,7 +161,7 @@ export const projects = [
       'HTML/CSS/JavaScript 기본기와 JSON 데이터 활용 경험을 쌓았습니다.',
     ],
     links: {
-      demo: '',
+      demo: 'https://bluebeatle97.github.io/sinla_01/',
       github: 'https://github.com/bluebeatle97/sinla_01',
       presentation: '',
       readme: '',
@@ -176,8 +177,8 @@ export const projects = [
     summary: 'React 기반 호텔 e-shop UI 클론 및 상품 탐색 화면',
     description:
       '롯데호텔 E-Shop 화면을 참고해 제작한 React 기반 쇼핑몰 클론 프로젝트입니다. React Router로 페이지 흐름을 구성하고 Redux Toolkit으로 상태를 관리하며, React Bootstrap과 Swiper를 활용해 상품 탐색 UI를 구현했습니다.',
-    role: 'Frontend Developer / React UI Clone / State & Routing',
-    period: '2026',
+    role: '1인 개발자 / 기획자 / 웹디자인',
+    period: '2026.03 ~ 2026.04',
     thumbnailUrl: '/assets/img/lotte_S.PNG',
     imageUrls: ['/assets/img/lotte_S.PNG'],
     techStack: [
