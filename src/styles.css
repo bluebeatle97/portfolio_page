@@ -200,7 +200,7 @@ button {
 :root[data-theme="dark"] .theme-toggle {
   border-color: rgba(244, 247, 242, 0.72);
   background: #f4f7f2;
-  color: #11150f;
+  color: var(--text);
 }
 
 .section-nav {
