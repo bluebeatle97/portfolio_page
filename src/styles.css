@@ -769,7 +769,7 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.46);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.78);
-  color: #11150f;
+  color: var(--text);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -800,7 +800,7 @@ button {
 .project-quick-links a:focus-visible {
   border-color: var(--accent-strong);
   background: var(--accent-strong);
-  color: #11150f;
+  color: var(--text);
   outline: none;
   transform: translateY(-2px);
 }
@@ -828,7 +828,7 @@ button {
   margin: 0;
   min-height: 1.12em;
   overflow: hidden;
-  color: #11150f;
+  color: var(--text);
   font-size: clamp(1.42rem, 2vw, 2.08rem);
   font-weight: 900;
   line-height: 1.05;
