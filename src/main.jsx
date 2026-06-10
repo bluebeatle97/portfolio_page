@@ -1,14 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
-import { featuredProjects, publishedProjects } from './data/projects.js';
+import { publishedProjects } from './data/projects.js';
 
 const navItems = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
-  { id: 'workflow', label: 'Workflow' },
   { id: 'skills', label: 'Skills' },
-  { id: 'contact', label: 'Contact' },
 ];
 
 const strengths = [
@@ -26,21 +24,26 @@ const skills = [
   ['Collaboration', ['Notion', 'Git-hub']],
 ];
 
-const workflow = [
-  ['01', 'Frame', '문제와 사용자의 흐름을 먼저 정리하고 페이지의 역할을 나눕니다.'],
-  ['02', 'Build', '작동 가능한 화면을 빠르게 만들고 필요한 데이터 구조를 연결합니다.'],
-  ['03', 'Refine', '인터랙션, 문장, 반응형 흐름을 실제 사용 기준으로 다듬습니다.'],
-  ['04', 'Ship', '검증 가능한 단위로 정리해 배포와 다음 확장이 가능하게 만듭니다.'],
+const introParagraphs = [
+  '기획과 구현 사이를 연결하는 AI 활용형 개발자',
+  '저는 아이디어를 기획안에만 남겨두기보다, 실제 화면과 기능으로 구현하는 과정에 관심을 가지고 작업해 왔습니다. 웹 구조와 프론트엔드 구현의 기본기를 익히기 위해 Vanilla JS와 React 기반의 클론 코딩을 진행했고, 이후에는 AI API와 자동화 도구를 프로젝트에 적용하면서 기획, 리소스 제작, 개발 과정을 더 빠르게 연결하는 방법을 고민했습니다.',
+  '팀 프로젝트 Project Contact에서는 사회적 고립을 주제로 한 인터랙티브 웹 콘텐츠의 기획과 연출을 맡았습니다. 사용자가 스크롤과 선택을 통해 이야기를 따라가고, 마지막에는 자신의 응답 결과를 확인할 수 있도록 전체 흐름을 설계했습니다. 이 과정에서 장면 구성과 스토리보드를 직접 만들고, 필요한 이미지와 영상 리소스는 AI 도구를 활용해 제작하며 콘텐츠의 분위기를 조정했습니다.',
+  '개발 과정에서도 필요한 부분을 직접 맡았습니다. 팀원이 구축한 서버와 DB 환경 위에서 사용자 응답, 선택지, 콘텐츠 데이터를 저장하기 위한 테이블 구조를 설계했고, API로 전달되는 데이터를 프론트엔드 화면과 시각적 연출에 연결했습니다. 이를 통해 사용자의 입력과 선택이 결과 화면과 콘텐츠 흐름에 반영되도록 구현했습니다.',
+  '개인 프로젝트 Color-Fit에서는 AI를 뷰티 서비스에 적용했습니다. 사용자의 진단 결과와 파우치 데이터를 기반으로 LLM API가 분석 결과를 생성하고, 이를 맞춤형 화장품 추천과 구매 흐름으로 연결하는 구조를 만들었습니다. 진단, 16타입 아카이브, 파우치 분석, AI 어드바이징, API 비용 보호 등 실제 서비스에 필요한 기능을 나누어 구현하며, 단순한 데모가 아니라 서비스 형태로 동작하는 결과물을 목표로 했습니다.',
+  '1인 개발 과정에서는 OpenAI Codex를 활용해 반복적인 구현 작업의 속도를 높였고, 프롬프트를 세분화하거나 테스트 하네스를 적용하면서 결과물을 검증하는 방식도 함께 익혔습니다. AI를 단순히 대신 만들어주는 도구로 보기보다, 제가 설계한 방향을 빠르게 실험하고 수정할 수 있게 해주는 작업 파트너로 활용해 왔습니다.',
+  '저는 기획, 연출, 개발을 따로 떨어진 과정으로 보기보다 하나의 흐름으로 연결해 결과물을 만드는 데 강점이 있습니다. 앞으로도 AI와 자동화 도구를 활용해 아이디어를 빠르게 검증하고, 실제 사용자가 경험할 수 있는 서비스로 구현하는 개발자가 되고 싶습니다.',
 ];
 
 const techIcons = {
   HTML: '/assets/icon/HTML5.png',
   CSS: '/assets/icon/CSS3.png',
   JavaScript: '/assets/icon/JavaScript.png',
+  'JSON Data': '/assets/icon/JSON.png',
   React: '/assets/icon/React.png',
   Vite: '/assets/icon/Vite.png',
   'Redux Toolkit': '/assets/icon/Redux.png',
   'React Bootstrap': '/assets/icon/React-Bootstrap.png',
+  Bootstrap: '/assets/icon/Bootstrap.png',
   Express: '/assets/icon/Express.png',
   'Three.js': '/assets/icon/Three.js.png',
   MySQL: '/assets/icon/MySQL.png',
@@ -49,6 +52,13 @@ const techIcons = {
   'Node.js': '/assets/icon/Node.js.png',
   Figma: '/assets/icon/Figma.png',
   'Git-hub': '/assets/icon/GitHub.png',
+};
+
+const linkLabels = {
+  demo: '데모',
+  github: 'GitHub',
+  presentation: '발표 자료',
+  readme: 'README',
 };
 
 function App() {
@@ -89,12 +99,10 @@ function App() {
     <>
       <Header activeSection={activeSection} theme={theme} onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
       <main className="snap-stage">
-        <Hero featuredProject={featuredProjects[0]} />
+        <Hero />
         <AboutSection />
         <ProjectsSection projects={projects} onOpenProject={setSelectedProject} />
-        <WorkflowSection />
         <SkillsSection />
-        <ContactSection />
       </main>
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </>
@@ -105,7 +113,7 @@ function Header({ activeSection, theme, onToggleTheme }) {
   return (
     <header className="site-header">
       <a className="brand-mark" href="#home" aria-label="Go to home">
-        WJ
+        <img src="/assets/img/unnamed.png" alt="" />
       </a>
       <nav className="section-nav" aria-label="Primary navigation">
         {navItems.map((item) => (
@@ -121,18 +129,22 @@ function Header({ activeSection, theme, onToggleTheme }) {
   );
 }
 
-function Hero({ featuredProject }) {
+function Hero() {
   return (
     <section id="home" className="page-panel hero-panel">
       <div className="panel-inner hero-layout">
+        <div className="hero-meta hero-meta-left">Personal Works</div>
+        <div className="hero-meta hero-meta-right">2026 02 - 06</div>
         <div className="hero-copy">
-          <p className="eyebrow">Portfolio 2026</p>
-          <h1>Portfolio</h1>
-          <p className="lead">
-            화면 구조, 인터랙션, 데이터 흐름을 정리하고 실제로 동작하는 동적 웹 결과물까지 구현합니다.
-          </p>
+          <h1>PORTFOLIO</h1>
+          <p className="hero-subtitle">Frontend / Product Builder/ Planner</p>
         </div>
-
+        <address className="hero-contact">
+          <a href="mailto:bluebeatle97@gmail.com">Email: bluebeatle97@gmail.com</a>
+          <a href="https://github.com/bluebeatle97" target="_blank" rel="noreferrer">
+            GitHub: github.com/bluebeatle97
+          </a>
+        </address>
       </div>
       <ScrollCue href="#about" />
     </section>
@@ -140,34 +152,69 @@ function Hero({ featuredProject }) {
 }
 
 function AboutSection() {
+  const profileRef = useRef(null);
+  const [profileHeight, setProfileHeight] = useState(0);
+
+  useEffect(() => {
+    if (!profileRef.current) return undefined;
+
+    const updateProfileHeight = () => {
+      if (profileRef.current) {
+        const nextHeight = Number(profileRef.current.getBoundingClientRect().height.toFixed(2));
+        setProfileHeight((currentHeight) => (Math.abs(currentHeight - nextHeight) > 0.25 ? nextHeight : currentHeight));
+      }
+    };
+
+    updateProfileHeight();
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateProfileHeight);
+      return () => window.removeEventListener('resize', updateProfileHeight);
+    }
+
+    const observer = new ResizeObserver(updateProfileHeight);
+    observer.observe(profileRef.current);
+    window.addEventListener('resize', updateProfileHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateProfileHeight);
+    };
+  }, []);
+
   return (
     <section id="about" className="page-panel about-panel">
       <div className="panel-inner">
         <SectionTitle label="About me" />
-        <div className="about-grid">
-          <aside className="profile-block">
-            <div className="portrait-frame" aria-hidden="true">
-              <span>WJ</span>
+        <div className="about-grid" style={profileHeight ? { '--about-profile-height': `${profileHeight}px` } : undefined}>
+          <aside className="profile-block" ref={profileRef}>
+            <div className="portrait-frame">
+              <img src="/assets/img/profile.png" alt="Kim Woojin profile" />
             </div>
-            <h2>Kim Woojin</h2>
-            <p>Frontend / Product Builder/ planner </p>
-            <a href="mailto:hello@example.com">bluebeatle97@gmail.com</a>
+            <h2>김우진 / Kim Woojin</h2>
+            <p>Frontend / Product Builder/ Planner </p>
+            <div className="about-summary">
+              <div>
+                <p className="eyebrow">Email</p>
+                <a className="about-email" href="mailto:bluebeatle97@gmail.com">
+                  bluebeatle97@gmail.com
+                </a>
+              </div>
+              <div>
+                <p className="eyebrow">GitHub</p>
+                <a className="about-github" href="https://github.com/bluebeatle97" target="_blank" rel="noreferrer">
+                  github.com/bluebeatle97
+                </a>
+              </div>
+            </div>
           </aside>
-          <div className="about-details">
-            <InfoBlock title="Character">
-              명확한 구조를 좋아하고, 아이디어를 빠르게 화면으로 검증하는 과정에 강점이 있습니다.
-            </InfoBlock>
-            <InfoBlock title="Direction">
-              과한 장식보다 읽히는 구성, 반복 가능한 프로젝트 구조, 실제 사용 흐름을 우선합니다.
-            </InfoBlock>
-            <InfoBlock title="Strength">
-              {strengths.map(([title, text]) => (
-                <article key={title} className="mini-card">
-                  <strong>{title}</strong>
-                  <span>{text}</span>
-                </article>
-              ))}
-            </InfoBlock>
+          <div className="intro-letter" aria-label="자기소개서">
+            <h3>자기소개서</h3>
+            {introParagraphs.map((paragraph, index) => (
+              <p key={paragraph} className={index === 0 ? 'intro-lead' : ''}>
+                {paragraph}
+              </p>
+            ))}
           </div>
         </div>
       </div>
@@ -177,19 +224,35 @@ function AboutSection() {
 }
 
 function ProjectsSection({ projects, onOpenProject }) {
-  const galleryProjects =
-    projects.length >= 3 ? projects : Array.from({ length: 3 }, (_, index) => projects[index % projects.length]);
-  const loopProjects = projects.length > 3 ? [...galleryProjects, ...galleryProjects] : galleryProjects;
+  const [slideIndex, setSlideIndex] = useState(0);
+  const visibleProjects = projects.length
+    ? Array.from({ length: Math.min(3, Math.max(projects.length, 3)) }, (_, offset) => projects[(slideIndex + offset) % projects.length])
+    : [];
+
+  const moveSlide = (direction) => {
+    if (projects.length <= 1) return;
+    setSlideIndex((currentIndex) => (currentIndex + direction + projects.length) % projects.length);
+  };
 
   return (
     <section id="projects" className="page-panel projects-panel">
       <div className="panel-inner">
-        <SectionTitle label="Projects" subtitle="썸네일 중심의 프로젝트 카드가 화면을 채우고, 클릭하면 상세 정보가 확장됩니다." />
+        <div className="projects-heading">
+          <SectionTitle label="Projects" />
+          <div className="project-controls" aria-label="Project slider controls">
+            <button type="button" onClick={() => moveSlide(-1)} aria-label="Previous project">
+              ←
+            </button>
+            <button type="button" onClick={() => moveSlide(1)} aria-label="Next project">
+              →
+            </button>
+          </div>
+        </div>
         <div className="project-rail" aria-label="Featured projects">
-          <div className={`project-track ${projects.length > 3 ? 'is-looping' : ''}`}>
-            {loopProjects.map((project, index) => (
+          <div className="project-track">
+            {visibleProjects.map((project, index) => (
               <ProjectCard
-                key={`${project.id}-${index}`}
+                key={`${project.id}-${slideIndex}-${index}`}
                 project={project}
                 instanceId={index}
                 onClick={() => onOpenProject(project)}
@@ -198,7 +261,7 @@ function ProjectsSection({ projects, onOpenProject }) {
           </div>
         </div>
       </div>
-      <ScrollCue href="#workflow" />
+      <ScrollCue href="#skills" />
     </section>
   );
 }
@@ -251,26 +314,6 @@ function ProjectCard({ project, instanceId, onClick }) {
   );
 }
 
-function WorkflowSection() {
-  return (
-    <section id="workflow" className="page-panel workflow-panel">
-      <div className="panel-inner">
-        <SectionTitle label="Workflow" subtitle="스크롤마다 하나의 작업 관점이 넘어가듯 읽히도록 단계를 압축했습니다." />
-        <div className="workflow-list">
-          {workflow.map(([number, title, text]) => (
-            <article key={title} className="workflow-item">
-              <span>{number}</span>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-      <ScrollCue href="#skills" />
-    </section>
-  );
-}
-
 function SkillsSection() {
   return (
     <section id="skills" className="page-panel skills-panel">
@@ -287,28 +330,6 @@ function SkillsSection() {
               </div>
             </article>
           ))}
-        </div>
-      </div>
-      <ScrollCue href="#contact" />
-    </section>
-  );
-}
-
-function ContactSection() {
-  return (
-    <section id="contact" className="page-panel contact-panel">
-      <div className="panel-inner contact-layout">
-        <div>
-          <p className="eyebrow">Contact</p>
-          
-        </div>
-        <div className="contact-actions">
-          <a className="button primary" href="bluebeatle97@gmil.com">
-            Email
-          </a>
-          <a className="button ghost" href="https://github.com/bluebeatle97" target="_blank" rel="noreferrer">
-            GitHub
-          </a>
         </div>
       </div>
     </section>
@@ -367,6 +388,8 @@ function ProjectModal({ project, onClose }) {
   if (!project) return null;
 
   const links = Object.entries(project.links).filter(([, url]) => Boolean(url));
+  const titleLinks = links.filter(([label]) => ['demo', 'github'].includes(label));
+  const detailLinks = links.filter(([label]) => !['demo', 'github'].includes(label));
 
   return (
     <div className="modal-backdrop" onMouseDown={onClose}>
@@ -378,30 +401,41 @@ function ProjectModal({ project, onClose }) {
         onMouseDown={(event) => event.stopPropagation()}
       >
         <button className="modal-close" type="button" onClick={onClose} aria-label="프로젝트 상세 모달 닫기">
-          Close
+          닫기
         </button>
         <div className="modal-hero">
           <img src={project.thumbnailUrl} alt={`${project.title} 대표 이미지`} />
-          <div>
+          <div className="modal-heading">
             <p className="eyebrow">{project.period}</p>
-            <h2 id="project-modal-title">{project.title}</h2>
+            <div className="modal-title-row">
+              <h2 id="project-modal-title">{project.title}</h2>
+              {titleLinks.length > 0 && (
+                <div className="modal-title-links" aria-label="프로젝트 주요 링크">
+                  {titleLinks.map(([label, url]) => (
+                    <a className="button ghost" href={url} target="_blank" rel="noreferrer" key={label}>
+                      {label === 'demo' ? '홈페이지' : 'GitHub'}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
             <p>{project.description}</p>
           </div>
         </div>
         <div className="modal-content">
-          <ModalBlock title="Role">
+          <ModalBlock title="역할">
             <p>{project.role}</p>
           </ModalBlock>
-          <ModalBlock title="Tech Stack">
+          <ModalBlock title="기술 스택">
             <div className="tag-list">
               {project.techStack.map((tag) => (
                 <TechTag key={tag} label={tag} />
               ))}
             </div>
           </ModalBlock>
-          <ModalList title="Features" items={project.features} />
-          <ModalList title="Process" items={project.process} />
-          <ModalBlock title="Challenges">
+          <ModalList title="주요 기능" items={project.features} />
+          <ModalList title="구현 과정" items={project.process} />
+          <ModalBlock title="어려웠던 점과 해결 방식">
             <div className="challenge-list">
               {project.challenges.map((challenge) => (
                 <article key={challenge.title}>
@@ -411,13 +445,13 @@ function ProjectModal({ project, onClose }) {
               ))}
             </div>
           </ModalBlock>
-          <ModalList title="Results" items={project.results} />
-          {links.length > 0 && (
-            <ModalBlock title="Links">
+          <ModalList title="결과 및 배운 점" items={project.results} />
+          {detailLinks.length > 0 && (
+            <ModalBlock title="관련 링크">
               <div className="modal-links">
-                {links.map(([label, url]) => (
+                {detailLinks.map(([label, url]) => (
                   <a className="button ghost" href={url} target="_blank" rel="noreferrer" key={label}>
-                    {label}
+                    {linkLabels[label] || label}
                   </a>
                 ))}
               </div>

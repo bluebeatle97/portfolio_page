@@ -288,3 +288,32 @@ AI 활용형 개발자
 - Added a theme toggle in the fixed header.
 - Projects still render from `src/data/projects.js` and open details in a modal.
 - Project cards now use a looping rail-style slider with four visible card instances.
+
+## Update - 2026-06-10
+
+- Added `sinla_01` and `LotteHotelEShopCopy` to `src/data/projects.js`.
+- Applied `sinla_S.PNG` and `lotte_S.PNG` as project thumbnails.
+- Updated project modal section labels to Korean.
+- Added exact icon mappings for `JSON Data` and `Bootstrap`.
+
+## Update - 2026-06-10 - Visual Assets and About Copy
+
+- Applied `blackback.png` and `whiteback.png` as theme-specific hero background images.
+- Replaced the header brand text with `unnamed.png`.
+- Replaced the About profile placeholder with `profile.png`.
+- Revised About into profile/email/representative skills and self-introduction content.
+- Tuned font sizes, line-height, paragraph width, and Korean line wrapping for readability.
+
+## Update - 2026-06-10 - Hero and About Layout
+
+- Revised the hero section into a spacious portfolio cover layout with top meta text, a large `PORTFOLIO` title, and bottom contact links.
+- Matched the About self-introduction box height to the adjacent profile block using the measured profile height.
+- Increased the spacing between the About title and content grid.
+
+## Update - 2026-06-10 - Section Simplification and Project Controls
+
+- Removed Workflow and Contact from the rendered landing page flow.
+- Kept the page structure focused on Hero, About, Projects, and Skills.
+- Added manual looping arrow controls to the project slider.
+- Moved project homepage and GitHub links into the modal title area.
+- Applied the hero typography direction more consistently across the site.
