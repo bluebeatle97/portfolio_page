@@ -6,9 +6,10 @@
   --text: #f4f7f2;
   --muted: #a9b3a6;
   --line: rgba(244, 247, 242, 0.14);
+  --signature: #d4e88a;
   --accent: #b7ff55;
-  --accent-strong: #8eea24;
-  --accent-soft: rgba(183, 255, 85, 0.14);
+  --accent-strong: var(--signature);
+  --accent-soft: rgba(212, 232, 138, 0.16);
   --shadow: rgba(0, 0, 0, 0.34);
   --max: 1260px;
   --hero-bg-image: url("/portfolio_page/assets/img/blackback.png");
@@ -26,9 +27,10 @@
   --text: #11150f;
   --muted: #697263;
   --line: rgba(17, 21, 15, 0.14);
+  --signature: #d4e88a;
   --accent: #000000;
-  --accent-strong: #4fa800;
-  --accent-soft: rgba(126, 224, 29, 0.18);
+  --accent-strong: var(--signature);
+  --accent-soft: rgba(212, 232, 138, 0.28);
   --shadow: rgba(48, 62, 40, 0.12);
   --hero-bg-image: url("/portfolio_page/assets/img/whiteback.png");
 }
@@ -200,7 +202,7 @@ button {
 :root[data-theme="dark"] .theme-toggle {
   border-color: rgba(244, 247, 242, 0.72);
   background: #f4f7f2;
-  color: var(--text);
+  color: #11150f;
 }
 
 .section-nav {
@@ -438,8 +440,8 @@ button {
 
 .project-controls button:hover,
 .project-controls button:focus-visible {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
   color: #10140c;
   outline: none;
   transform: translateY(-2px);
@@ -492,7 +494,7 @@ button {
   background:
     linear-gradient(135deg, var(--accent-soft), transparent),
     var(--surface);
-  box-shadow: inset 0 0 80px color-mix(in srgb, var(--accent) 12%, transparent);
+  box-shadow: inset 0 0 80px color-mix(in srgb, var(--accent-strong) 18%, transparent);
 }
 
 .portrait-frame img {
@@ -740,7 +742,7 @@ button {
   background: #ffffff;
 }
 
-.project-thumb img {
+.project-thumb > img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -764,16 +766,18 @@ button {
 }
 
 .project-quick-links a {
+  flex: 0 0 auto;
   min-height: 34px;
   padding: 0 12px;
   border: 1px solid rgba(255, 255, 255, 0.46);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.78);
-  color: var(--text);
+  color: #11150f;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
+  white-space: nowrap;
   font-size: 0.76rem;
   font-weight: 900;
   backdrop-filter: blur(12px);
@@ -785,14 +789,20 @@ button {
 }
 
 .project-quick-links a img {
+  position: static;
+  inset: auto;
   width: 17px;
   height: 17px;
+  max-width: 17px;
   display: block;
   object-fit: contain;
   flex: 0 0 auto;
 }
 
 .project-quick-links a span {
+  display: block;
+  flex: 0 0 auto;
+  color: #11150f;
   line-height: 1;
 }
 
@@ -800,7 +810,7 @@ button {
 .project-quick-links a:focus-visible {
   border-color: var(--accent-strong);
   background: var(--accent-strong);
-  color: var(--text);
+  color: #11150f;
   outline: none;
   transform: translateY(-2px);
 }
@@ -991,8 +1001,8 @@ button {
 }
 
 .button.primary {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
   color: #10140c;
 }
 
@@ -1013,7 +1023,7 @@ button {
   height: 10px;
   margin-top: 10px;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--accent-strong);
   animation: cue-drop 1.5s ease-in-out infinite;
 }
 
@@ -1141,11 +1151,13 @@ button {
   padding: 0 14px;
   gap: 8px;
   font-size: 0.78rem;
+  white-space: nowrap;
 }
 
 .modal-title-links .button img {
   width: 18px;
   height: 18px;
+  max-width: 18px;
   display: block;
   object-fit: contain;
   flex: 0 0 auto;
@@ -1155,14 +1167,14 @@ button {
   border-color: var(--accent-strong);
   background: var(--accent-strong);
   color: #11150f;
-  box-shadow: 0 12px 34px rgba(79, 168, 0, 0.22);
+  box-shadow: 0 12px 34px rgba(212, 232, 138, 0.28);
 }
 
 .modal-title-links .button.signature:hover,
 .modal-title-links .button.signature:focus-visible {
   border-color: var(--accent-strong);
-  background: var(--accent);
-  color: var(--bg);
+  background: var(--accent-strong);
+  color: #11150f;
   outline: none;
   transform: translateY(-2px);
 }

@@ -341,3 +341,18 @@ AI 활용형 개발자
 - Reversed the theme toggle button colors so light mode shows a black `Dark` button with white text.
 - Switched project quick-link labeling from URL matching to `data-link-type` so GitHub Pages demo URLs still display as Live Site.
 - Replaced CSS pseudo-element link icons with real inline `<img>` icons on both project cards and modal title links.
+
+## Update - 2026-06-11 - Project Link Icon Fix
+
+- Scoped the project thumbnail image selector to the direct thumbnail image so quick-link icons are not positioned as full thumbnail overlays.
+- Added fixed icon sizing and nowrap link text for Live Site and GitHub buttons in project cards and modal title links.
+
+## Update - 2026-06-11 - Signature Color
+
+- Added `#d4e88a` as the signature color for non-text green accents.
+- Updated project controls, link buttons, soft accent backgrounds, scroll cue, and modal link glow to use the signature color while preserving existing text accent colors.
+
+## Update - 2026-06-11 - Button Text Contrast
+
+- Fixed the dark-mode theme toggle so the `Light` label remains dark on its light button background.
+- Forced project quick-link button labels to dark text so shared project-card span styles do not fade the Live Site and GitHub labels.
